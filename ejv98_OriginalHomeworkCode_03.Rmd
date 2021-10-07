@@ -1,0 +1,183 @@
+---
+title: "ejv98_OriginalHomeworkCode_03"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+#Challenge 1
+
+```{r}
+
+library(curl)
+f<-curl(https://raw.githubusercontent.com/fuzzyatelin/fuzzyatelin.github.io/master/AN588_Fall21/zombies.csv")
+d<-read.csv(f, header = TRUE, sep = ",", stringsAsFactors = FALSE)
+
+# This loads the zombies dataset into the program
+
+summary(d)
+
+#Running summary() will show me the mean of every quantitative value from the population
+
+MEANS FROM DATASET (given by summary(d))
+
+height = 67.63
+weight = 143.91
+zombies killed = 2.992
+years of education == 2.996
+age = 20.05
+
+```
+
+```
+#Challenge 2
+
+```{r}
+library(ggplot2)
+library(gridExtra)
+
+#height
+x = ggplot(d, aes(x=gender, y=height)) +geom_boxplot()
+x
+
+
+#weight
+y = ggplot(d, aes(x=gender, y=weight)) +geom_boxplot()
+y
+
+
+#zombies killed
+g = ggplot(d, aes(x=gender, y=zombies_killed)) +geom_boxplot()
+g
+
+
+#education
+c = ggplot(d, aes(x=gender, y=years_of_education)) +geom_boxplot()
+c
+
+
+#age
+w = ggplot(d, aes(x=gender, y=age)) +geom_boxplot()
+w
+
+```
+
+#Challenge 3
+
+```{r}
+library(ggplot2)
+
+h = ggplot(d, aes(x=age, y=height)) +geom_point()
+h
+
+w = ggplot(d, aes(x=age, y=weight)) + geom_point()
+w
+
+<!-- Age, height, and weight are directly proportional (i.e. as age increases, so does height and weight) -->
+
+
+
+
+
+
+
+
+
+
+```
+
+#Challenge 4
+
+```{r}
+qqnorm(d$height)
+
+
+qqnorm(d$weight)
+
+
+qqnorm(d$age)
+
+
+qqnorm(d$years_of_education)
+<!-- not normal -->
+
+qqnorm(d$zombies_killed)
+<!-- not normal -->
+
+<!-- Zombies killed and years of education are not normal. Looking at the qq plot, the loops do not make a linear line.  -->
+
+```
+
+#Challenge 5
+
+```{r}
+library(dplyr)
+
+set.seed(1)
+
+sam1 <- sample_n(d, 30, replace = FALSE)
+
+summary(sam1) 
+mean(sam1$height) 
+mean(sam1$weight)
+mean(sam1$zombies_killed)
+mean(sam1$years_of_education)
+mean(sam1$age)
+
+
+sd(sam1$height)
+sd(sam1$weight)
+sd(sam1$zombies_killed)
+sd(sam1$years_of_education)
+sd(sam1$age)
+
+se <- function(x) {sd(x)/sqrt(length(x))}
+se(sam1$height)
+se(sam1$weight)
+se(sam1$zombies_killed)
+se(sam1$years_of_education)
+se(sam1$age)
+
+quantile(sam1$height, c(0.025, 0.975))
+quantile(sam1$weight, c(0.025, 0.975))
+quantile(sam1$age, c(0.025, 0.975))
+
+IC_Poisson <- function(x) {
+ upper = mean(x) + 1.96 * sqrt(mean(x)/length(x))
+ lower = mean(x) - 2.58 * sqrt(mean(x)/length(x))
+ ci <- c(lower, upper)
+ return(ci)
+ }
+
+
+```
+
+#Challenge 6
+
+```{r}
+
+```
+
+#Some issues I had: (1) I actually had an issue uploading the data set! I had to look it up on google. I couldn't remember how I did everything before. (2) I am having a really hard time figuring out Challenge 6. I don't really know where to start. Hopefully, I can get some ideas with peer commentary. (3) I couldn't figure out how to draw the different functions simultaneously. I looked it up on google. 

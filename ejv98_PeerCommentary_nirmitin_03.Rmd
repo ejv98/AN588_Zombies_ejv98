@@ -1,0 +1,137 @@
+---
+title: "ejv98_PeerCommentary_nirmitin_03"
+author: "Nirmiti Naik"
+date: "10/12/2021"
+output: html_document
+---
+
+General feedback: I think it would helpful to add what each challenge/question is since it's a little confusing to toggle between this file and the assignment page to recall what the requirements are. - NN
+
+#Challenge 1
+
+I had to break up the r chunk because it kept showing an error for the f <- line. I looked at your challenge below of uploading the data set, it looked similar enough to what was on one of the modules however I don't know what exactly the error was - I just copied and pasted it from either the module page or the assignment page. - NN
+```{r}
+library(curl)
+f <- f <- curl("https://raw.githubusercontent.com/fuzzyatelin/fuzzyatelin.github.io/master/AN588_Fall21/zombies.csv")
+d <- read.csv(f, header = TRUE, sep = ",", stringsAsFactors = FALSE)
+head(d)
+```
+
+You need to also add the standard deviations of each variable - perhaps, this info is also in the summary(d) call? It might also be more streamlined if you coded for the mean of each variable specifically so the reader doesn't have to search through the summary data to find what's relevant. - NN
+```{r}
+# This loads the zombies dataset into the program
+summary(d)
+#Running summary() will show me the mean of every quantitative value from the population
+#MEANS FROM DATASET (given by summary(d))
+height = 67.63
+weight = 143.91
+zombieskilled = 2.992
+yearsofeducation = 2.996
+age = 20.05
+```
+
+#Challenge 2
+Your boxplots look good! - NN
+```{r}
+library(ggplot2)
+#height
+x = ggplot(d, aes(x=gender, y=height)) +geom_boxplot()
+x
+#weight
+y = ggplot(d, aes(x=gender, y=weight)) +geom_boxplot()
+y
+#zombies killed
+g = ggplot(d, aes(x=gender, y=zombies_killed)) +geom_boxplot()
+g
+#education
+c = ggplot(d, aes(x=gender, y=years_of_education)) +geom_boxplot()
+c
+#age
+w = ggplot(d, aes(x=gender, y=age)) +geom_boxplot()
+w
+```
+
+#Challenge 3
+I think there's an issue with how you previously added your text within your r chunks because the file wouldn't knit until I put the <-- text --> sections after a # - maybe this issue is just on my end, but your putting your interpretations outside of the code chunk could make it easier to follow. I agree with your conclusion on the relation between the variables and age.- NN
+```{r}
+library(ggplot2)
+h = ggplot(d, aes(x=age, y=height)) +geom_point()
+h
+w = ggplot(d, aes(x=age, y=weight)) + geom_point()
+w
+# <-- Age, height, and weight are directly proportional (i.e. as age increases, so does height and weight) -->
+```
+
+#Challenge 4
+I agree with your answers - maybe using a qqline would help reinforce your argument since it's a measure of normality which could create a more concrete link between the different variables and normal distribution - just an idea. - NN
+```{r}
+qqnorm(d$height)
+qqnorm(d$weight)
+qqnorm(d$age)
+qqnorm(d$years_of_education)
+#<!-- not normal -->
+qqnorm(d$zombies_killed)
+#<!-- not normal -->
+#<!-- Zombies killed and years of education are not normal. Looking at the qq plot, the loops do not make a linear line.  -->
+```
+
+#Challenge 5
+I think breaking this section into smaller r chunks would be beneficial since then you could see results bit by bit rather than all at once which is difficult to parse through. 
+```{r}
+library(dplyr)
+
+set.seed(1)
+
+sam1 <- sample_n(d, 30, replace = FALSE)
+
+summary(sam1) 
+```
+
+##Mean of variables
+```{r}
+mean(sam1$height) 
+mean(sam1$weight)
+mean(sam1$zombies_killed)
+mean(sam1$years_of_education)
+mean(sam1$age)
+```
+
+##Standard deviation of variables
+```{r}
+sd(sam1$height)
+sd(sam1$weight)
+sd(sam1$zombies_killed)
+sd(sam1$years_of_education)
+sd(sam1$age)
+```
+
+##Standard error of variables
+```{r}
+se <- function(x) {sd(x)/sqrt(length(x))}
+se(sam1$height)
+se(sam1$weight)
+se(sam1$zombies_killed)
+se(sam1$years_of_education)
+se(sam1$age)
+```
+
+##95% CI
+Good job on using the appropriate functions for the variables using normal distribution, however I'm unsure of what the IC_poisson method is doing - has it been applied to the remaining two variables or is that just the code? - NN 
+```{r}
+quantile(sam1$height, c(0.025, 0.975))
+quantile(sam1$weight, c(0.025, 0.975))
+quantile(sam1$age, c(0.025, 0.975))
+
+IC_Poisson <- function(x) {
+ upper = mean(x) + 1.96 * sqrt(mean(x)/length(x))
+ lower = mean(x) - 2.58 * sqrt(mean(x)/length(x))
+ ci <- c(lower, upper)
+ return(ci)
+ }
+```
+
+#Challenge 6
+I'm definitely in a similar space for figuring out Challenge 6, I think because the sample is so big we would use t-tests? and average our results with the sample before to get the new mean/sd/etc. - NN
+```{r}
+```
+#Some issues I had: (1) I actually had an issue uploading the data set! I had to look it up on google. I couldn't remember how I did everything before. (2) I am having a really hard time figuring out Challenge 6. I don't really know where to start. Hopefully, I can get some ideas with peer commentary. (3) I couldn't figure out how to draw the different functions simultaneously. I looked it up on google.
